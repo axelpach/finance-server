@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from langchain.document_loaders import WebBaseLoader
 from langchain.indexes import VectorstoreIndexCreator
+from langchain.chat_models import ChatOpenAI
 
 load_dotenv()
 
@@ -17,7 +18,7 @@ def message(query: str):
     try:
         loader = WebBaseLoader("https://lilianweng.github.io/posts/2023-06-23-agent/")
         index = VectorstoreIndexCreator().from_loaders([loader])
-        answer = index.query(query)
+        answer = index.query(query, llm=ChatOpenAI())
         return JSONResponse(content={"message": answer})
     except:
         logging.exception("Error occurred:")
