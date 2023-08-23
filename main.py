@@ -1,15 +1,16 @@
 import os 
-import constants
+from dotenv import load_dotenv
 import logging
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from langchain.document_loaders import WebBaseLoader
 from langchain.indexes import VectorstoreIndexCreator
 
+load_dotenv()
 
 app = FastAPI()
 app.title = "My First API"
-os.environ["OPENAI_API_KEY"] = constants.API_KEY
+os.environ["OPENAI_API_KEY"] = os.getenv('API_KEY')
 
 @app.post("/")
 def message(query: str):
